@@ -862,7 +862,7 @@ function applyEffect(effect){
   var sel=window.getSelection();
   if(!sel||!sel.rangeCount)return;
   var range=sel.getRangeAt(0);
-  if(range.collapsed)return;
+  if(range.collapsed){toast('Select some text first','error');return}
 
   var span=document.createElement('span');
   if(effect==='highlight')span.className='effect-highlight';
@@ -982,6 +982,20 @@ function setupEvents(){
   }
   document.addEventListener('click',handleAction);
   document.addEventListener('touchend',handleAction);
+
+  // Toolbar buttons (bold/italic/color/font/effects/checklist) need the
+  // editor's text selection to still be intact when their action runs.
+  // On touchscreens, simply touching a button outside the editor collapses
+  // the selection before the tap is registered, which is harmless for
+  // commands like bold/italic (they still do something) but makes the
+  // effect buttons (Highlight/Wavy/Glow/Stamp) silently no-op, since they
+  // require real selected text. Prevent the default mousedown/touchstart
+  // behavior on toolbar buttons so the selection is preserved.
+  function preserveSelection(e){
+    if(e.target.closest('.toolbar-btn'))e.preventDefault();
+  }
+  document.addEventListener('mousedown',preserveSelection);
+  document.addEventListener('touchstart',preserveSelection,{passive:false});
 
   // Checkbox toggling inside the editor (checklist items)
   document.getElementById('editor').addEventListener('change',function(e){
