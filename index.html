@@ -814,9 +814,32 @@ function createPage(){
   save();renderNav();switchPage(id);closeNewPage();toast('Page created!');
 }
 
-function fmt(cmd,val){document.execCommand(cmd,false,val);document.getElementById('editor').focus()}
+function fmt(cmd,val){restoreEditorSelection();document.execCommand(cmd,false,val);document.getElementById('editor').focus()}
+
+let savedRange=null;
+
+document.addEventListener('selectionchange',()=>{
+  const sel=window.getSelection();
+  if(!sel||sel.rangeCount===0)return;
+  const range=sel.getRangeAt(0);
+  const editor=document.getElementById('editor');
+  if(editor && editor.contains(range.commonAncestorContainer)){
+    savedRange=range.cloneRange();
+  }
+});
+
+function restoreEditorSelection(){
+  const editor=document.getElementById('editor');
+  editor.focus();
+  if(savedRange){
+    const sel=window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+  }
+}
 
 function changeFont(fontFamily){
+  restoreEditorSelection();
   document.execCommand('fontName',false,fontFamily);
   document.getElementById('editor').focus();
 }
@@ -834,8 +857,8 @@ function toggleChecklistItem(cb){
 }
 
 function applyEffect(effect){
+  restoreEditorSelection();
   var editor=document.getElementById('editor');
-  editor.focus();
   var sel=window.getSelection();
   if(!sel||!sel.rangeCount)return;
   var range=sel.getRangeAt(0);
@@ -964,16 +987,6 @@ function setupEvents(){
   document.getElementById('editor').addEventListener('change',function(e){
     if(e.target && e.target.type==='checkbox')toggleChecklistItem(e.target);
   });
-
-  // Keep text selection alive when tapping the formatting toolbar,
-  // otherwise mousedown/touchstart steals focus from the editor before
-  // execCommand runs and formatting silently does nothing.
-  var toolbar=document.querySelector('.editor-toolbar');
-  function guardToolbar(e){
-    if(e.target.closest('button'))e.preventDefault();
-  }
-  toolbar.addEventListener('mousedown',guardToolbar);
-  toolbar.addEventListener('touchstart',guardToolbar,{passive:false});
 }
 setupEvents();
 // =============================================
