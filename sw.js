@@ -1,10 +1,7 @@
 // Jotter Pad service worker — caches the app shell so it loads offline.
 // All note data itself lives in localStorage, which already works offline;
 // this just makes sure the HTML/CSS/JS/manifest load without a network hit.
-//
-// IMPORTANT: bump CACHE_NAME any time index.html/manifest.json changes.
-// Browsers only re-run install() when sw.js itself changes byte-for-byte,
-// so this version bump is what actually invalidates old cached assets.
+
 const CACHE_NAME = 'jotter-pad-v3';
 const ASSETS = [
   './',
@@ -28,20 +25,22 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Network-first for the app shell: always try to get the freshest version
-// so updates show up on the very next reload, falling back to the cached
-// copy when offline or the network fails.
+// Cache-first for app shell, falling back to network, falling back to
+// whatever's cached if the network fails (offline).
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        if (response.ok) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        }
-        return response;
-      })
-      .catch(() => caches.match(event.request))
+    caches.match(event.request).then((cached) => {
+      const fetchPromise = fetch(event.request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => cached);
+      return cached || fetchPromise;
+    })
   );
 });
