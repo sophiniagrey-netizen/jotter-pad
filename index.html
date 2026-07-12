@@ -305,12 +305,15 @@
 
 <div id="app-shell" style="display:none">
   <div class="top-bar">
-    <div class="top-bar-left">
+    <div class="top-bar-left" data-action="editCurrentPage" style="cursor:pointer">
 
       <div id="page-icon" class="top-bar-icon"></div>
-      <div style="min-width:0">
-        <div id="page-title" class="top-bar-title"></div>
-        <div id="page-subtitle" class="top-bar-sub"></div>
+      <div style="min-width:0;display:flex;align-items:center;gap:6px">
+        <div>
+          <div id="page-title" class="top-bar-title"></div>
+          <div id="page-subtitle" class="top-bar-sub"></div>
+        </div>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M17 3a2.85 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
       </div>
     </div>
     <div class="top-bar-right">
@@ -436,7 +439,7 @@
 <div id="newpage-modal" class="modal-overlay" data-action="closeNewPageOverlay">
   <div class="modal-sheet">
     <div class="modal-header">
-      <div class="modal-title">New Jotter Page</div>
+      <div class="modal-title" id="newpage-modal-title">New Jotter Page</div>
       <button class="modal-close" data-action="closeNewPage">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
@@ -459,9 +462,11 @@
           <button class="color-option" style="background:#A78BFA" data-action="pickColor" data-color="purple"></button>
         </div>
       </div>
-      <button class="btn-full" style="background:#8B5CF6;color:#fff" data-action="createPage">Create Page</button>
+      <button class="btn-full" style="background:#8B5CF6;color:#fff" id="newpage-save-btn" data-action="createPage">Create Page</button>
+      <button class="btn-full" style="background:#fff;color:#EF4444;border-color:#EF4444;box-shadow:3px 3px 0 0 #EF4444;margin-top:10px;display:none" id="newpage-delete-btn" data-action="deletePage">Delete Page</button>
     </div>
   </div>
+
 </div>
 
 <div id="archive-modal" class="modal-overlay" data-action="closeArchiveOverlay">
@@ -575,7 +580,10 @@ function renderNav(){
   nav.appendChild(addBtn);
 }
 
-function switchPage(pageId){currentPage=pageId;renderNav();renderPage()}
+function switchPage(pageId){
+  if(pageId===currentPage){openEditPage(pageId);return}
+  currentPage=pageId;renderNav();renderPage();
+}
 
 function renderPage(){
   const page=pages.find(p=>p.id===currentPage);
@@ -789,14 +797,35 @@ function undoDelete(){
   toast('Restored');
 }
 
+let editingPageId=null;
+
 function showNewPage(){
+  editingPageId=null;
+  document.getElementById('newpage-modal-title').textContent='New Jotter Page';
+  document.getElementById('newpage-save-btn').textContent='Create Page';
+  document.getElementById('newpage-delete-btn').style.display='none';
   document.getElementById('new-page-name').value='';
   pickedColor='violet';
   updateColorUI();
   document.getElementById('newpage-modal').classList.add('show');
+  setTimeout(()=>document.getElementById('new-page-name').focus(),150);
 }
 
-function closeNewPage(){document.getElementById('newpage-modal').classList.remove('show')}
+function openEditPage(pageId){
+  const page=pages.find(p=>p.id===pageId);
+  if(!page)return;
+  editingPageId=pageId;
+  document.getElementById('newpage-modal-title').textContent='Edit Page';
+  document.getElementById('newpage-save-btn').textContent='Save Changes';
+  document.getElementById('newpage-delete-btn').style.display=pages.length>1?'block':'none';
+  document.getElementById('new-page-name').value=page.name;
+  pickedColor=page.color;
+  updateColorUI();
+  document.getElementById('newpage-modal').classList.add('show');
+  setTimeout(()=>document.getElementById('new-page-name').focus(),150);
+}
+
+function closeNewPage(){document.getElementById('newpage-modal').classList.remove('show');editingPageId=null}
 
 function pickColor(c){pickedColor=c;updateColorUI()}
 
@@ -809,9 +838,30 @@ function updateColorUI(){
 function createPage(){
   const name=document.getElementById('new-page-name').value.trim();
   if(!name){toast('Enter a name','error');return}
+  if(editingPageId){
+    const page=pages.find(p=>p.id===editingPageId);
+    if(page){page.name=name;page.color=pickedColor;save();renderNav();renderPage();toast('Page updated!')}
+    closeNewPage();
+    return;
+  }
   const id='page_'+Date.now();
   pages.push({id,name,color:pickedColor,icon:'default',subtitle:'Custom page'});
   save();renderNav();switchPage(id);closeNewPage();toast('Page created!');
+}
+
+function deletePage(){
+  if(!editingPageId)return;
+  if(pages.length<=1){toast('Keep at least one page','error');return}
+  const page=pages.find(p=>p.id===editingPageId);
+  const jotCount=(jots[editingPageId]||[]).length;
+  const msg=jotCount>0?('Delete "'+page.name+'" and its '+jotCount+' jot'+(jotCount===1?'':'s')+'? This cannot be undone.'):('Delete "'+page.name+'"?');
+  if(!confirm(msg))return;
+  const deletedId=editingPageId;
+  pages=pages.filter(p=>p.id!==deletedId);
+  delete jots[deletedId];
+  delete archived[deletedId];
+  if(currentPage===deletedId)currentPage=pages[0].id;
+  save();closeNewPage();renderNav();renderPage();toast('Page deleted','delete');
 }
 
 function fmt(cmd,val){restoreEditorSelection();document.execCommand(cmd,false,val);document.getElementById('editor').focus()}
@@ -966,6 +1016,8 @@ function setupEvents(){
     else if(action==='closeNewPageOverlay'){if(e.target===el){e.preventDefault();closeNewPage();}}
     else if(action==='pickColor'){e.preventDefault();pickColor(el.dataset.color);}
     else if(action==='createPage'){e.preventDefault();createPage();}
+    else if(action==='deletePage'){e.preventDefault();deletePage();}
+    else if(action==='editCurrentPage'){e.preventDefault();openEditPage(currentPage);}
     else if(action==='closeArchive'){e.preventDefault();closeArchive();}
     else if(action==='closeArchiveOverlay'){if(e.target===el){e.preventDefault();closeArchive();}}
     else if(action==='fmt'){e.preventDefault();fmt(el.dataset.cmd);}

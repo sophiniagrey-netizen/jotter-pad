@@ -2,7 +2,7 @@
 // All note data itself lives in localStorage, which already works offline;
 // this just makes sure the HTML/CSS/JS/manifest load without a network hit.
 
-const CACHE_NAME = 'jotter-pad-v3';
+const CACHE_NAME = 'jotter-pad-v4';
 const ASSETS = [
   './',
   './index.html',
