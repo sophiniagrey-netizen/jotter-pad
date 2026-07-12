@@ -785,9 +785,10 @@ function chooseTextJot(){
 function choosePhotoJot(){
   closeJotChoice();
   addNewJot();
-  // Skip straight to the photo picker instead of leaving the person to
-  // tap into the text area first and then hunt for the toolbar icon.
-  setTimeout(pickImage,150);
+  // Must be called synchronously, in the same tap, or Android Chrome
+  // silently refuses to open the picker (a setTimeout here breaks the
+  // "direct user gesture" chain it requires).
+  pickImage();
 }
 
 function addNewJot(){
