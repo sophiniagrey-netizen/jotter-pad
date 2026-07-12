@@ -385,15 +385,36 @@
       </div>
       <div class="empty-title">Nothing on your <span id="empty-page-name">general</span> jots pad yet</div>
       <div class="empty-desc">Slap down your first sticky. It only takes a second.</div>
-      <button class="empty-btn" data-action="addNewJot">Start a note</button>
+      <button class="empty-btn" data-action="openJotChoice">Start a note</button>
     </div>
   </div>
 
   <div class="bottom-nav" id="bottom-nav"></div>
 
-  <button class="fab" data-action="addNewJot">
+  <button class="fab" data-action="openJotChoice">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
   </button>
+</div>
+
+<div id="jotchoice-modal" class="modal-overlay" data-action="closeJotChoiceOverlay">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <div class="modal-title">New Jot</div>
+      <button class="modal-close" data-action="closeJotChoice">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" style="display:flex;gap:12px">
+      <button class="btn-full" style="width:auto;flex:1;background:#8B5CF6;color:var(--on-accent);display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 12px" data-action="chooseTextJot">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Write a note
+      </button>
+      <button class="btn-full" style="width:auto;flex:1;background:var(--surface);color:var(--border);border:2px solid var(--border);box-shadow:2px 2px 0 0 var(--border);display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 12px" data-action="choosePhotoJot">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Add a picture
+      </button>
+    </div>
+  </div>
 </div>
 
 <div id="editor-modal" class="modal-overlay" data-action="closeEditorOverlay">
@@ -444,7 +465,7 @@
         <button class="toolbar-btn" data-action="pickImage" title="Insert picture">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
         </button>
-        <input type="file" id="image-file-input" accept="image/*" style="display:none">
+        <input type="file" id="image-file-input" accept="image/*" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">
         <div class="toolbar-sep"></div>
         <button class="toolbar-btn" data-action="foreColor" data-val="#8B5CF6" title="Violet" style="background:#8B5CF6;border-color:var(--border)"><svg width="10" height="10" viewBox="0 0 24 24" fill="white" stroke="none"><circle cx="12" cy="12" r="10"/></svg></button>
         <button class="toolbar-btn" data-action="foreColor" data-val="#F472B6" title="Pink" style="background:#F472B6;border-color:var(--border)"><svg width="10" height="10" viewBox="0 0 24 24" fill="white" stroke="none"><circle cx="12" cy="12" r="10"/></svg></button>
@@ -549,7 +570,7 @@
       </p>
       <button class="btn-full" style="background:#8B5CF6;color:var(--on-accent);margin-bottom:10px" data-action="exportBackup">Export backup (.json)</button>
       <button class="btn-full" style="background:var(--surface);color:var(--border);border:2px solid var(--border);box-shadow:2px 2px 0 0 var(--border)" data-action="pickBackupFile">Import backup</button>
-      <input type="file" id="backup-file-input" accept="application/json,.json" style="display:none">
+      <input type="file" id="backup-file-input" accept="application/json,.json" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">
       <p id="backup-status" style="font-size:12px;color:var(--text-faint);margin-top:12px"></p>
     </div>
   </div>
@@ -751,6 +772,22 @@ function toggleView(view){
   document.getElementById('btn-grid').classList.toggle('active',view==='grid');
   document.getElementById('btn-list').classList.toggle('active',view==='list');
   renderJots();
+}
+
+function openJotChoice(){document.getElementById('jotchoice-modal').classList.add('show')}
+function closeJotChoice(){document.getElementById('jotchoice-modal').classList.remove('show')}
+
+function chooseTextJot(){
+  closeJotChoice();
+  addNewJot();
+}
+
+function choosePhotoJot(){
+  closeJotChoice();
+  addNewJot();
+  // Skip straight to the photo picker instead of leaving the person to
+  // tap into the text area first and then hunt for the toolbar icon.
+  setTimeout(pickImage,150);
 }
 
 function addNewJot(){
@@ -1162,6 +1199,7 @@ window.addEventListener('keydown',e=>{
     if(document.getElementById('newpage-modal').classList.contains('show'))closeNewPage();
     if(document.getElementById('archive-modal').classList.contains('show'))closeArchive();
     if(document.getElementById('backup-modal').classList.contains('show'))closeBackup();
+    if(document.getElementById('jotchoice-modal').classList.contains('show'))closeJotChoice();
   }
 });
 
@@ -1177,6 +1215,11 @@ function setupEvents(){
     else if(action==='toggleView'){e.preventDefault();toggleView(el.dataset.view);}
     else if(action==='toggleTheme'){e.preventDefault();toggleTheme();}
     else if(action==='addNewJot'){e.preventDefault();addNewJot();}
+    else if(action==='openJotChoice'){e.preventDefault();openJotChoice();}
+    else if(action==='closeJotChoice'){e.preventDefault();closeJotChoice();}
+    else if(action==='closeJotChoiceOverlay'){e.preventDefault();if(e.target===el)closeJotChoice();}
+    else if(action==='chooseTextJot'){e.preventDefault();chooseTextJot();}
+    else if(action==='choosePhotoJot'){e.preventDefault();choosePhotoJot();}
     else if(action==='closeEditor'){e.preventDefault();closeEditor();}
     else if(action==='closeEditorOverlay'){e.preventDefault();if(e.target===el)closeEditor();}
     else if(action==='archiveCurrent'){e.preventDefault();archiveCurrent();}
