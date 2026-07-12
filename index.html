@@ -784,21 +784,22 @@ function chooseTextJot(){
 
 function choosePhotoJot(){
   closeJotChoice();
-  addNewJot();
+  addNewJot(false);
   // Must be called synchronously, in the same tap, or Android Chrome
   // silently refuses to open the picker (a setTimeout here breaks the
   // "direct user gesture" chain it requires).
   pickImage();
 }
 
-function addNewJot(){
+function addNewJot(autofocus){
   const id='jot_'+Date.now();
   if(!jots[currentPage])jots[currentPage]=[];
   jots[currentPage].unshift({id,content:'',date:new Date().toISOString(),pageId:currentPage,pinned:false});
-  save();openEditor(id);
+  save();openEditor(id,autofocus);
 }
 
-function openEditor(jotId){
+function openEditor(jotId,autofocus){
+  if(autofocus===undefined)autofocus=true;
   const jot=(jots[currentPage]||[]).find(j=>j.id===jotId);
   if(!jot)return;
   editingJotId=jotId;
@@ -809,7 +810,10 @@ function openEditor(jotId){
   document.getElementById('editor').innerHTML=jot.content;
   document.getElementById('editor-pin-btn').classList.toggle('is-pinned',!!jot.pinned);
   document.getElementById('editor-modal').classList.add('show');
-  setTimeout(()=>document.getElementById('editor').focus(),100);
+  // Auto-focusing pops the on-screen keyboard. For the photo-jot flow this
+  // fires right as the native picture picker is opening and steals focus
+  // back, closing the picker — so that path opts out of it.
+  if(autofocus)setTimeout(()=>document.getElementById('editor').focus(),100);
 }
 
 function closeEditor(){document.getElementById('editor-modal').classList.remove('show');editingJotId=null}
