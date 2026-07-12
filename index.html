@@ -234,9 +234,12 @@
   .modal-body::-webkit-scrollbar { display: none; }
 
   .editor-toolbar { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; padding: 8px; background: var(--panel-item-bg); border-radius: 12px; margin-bottom: 12px; }
-  .toolbar-btn { width: 34px; height: 34px; border-radius: 8px; border: 2px solid var(--input-border); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; padding: 0; transition: all .15s ease; flex-shrink: 0; }
+  .toolbar-btn { width: 34px; height: 34px; border-radius: 8px; border: 2px solid var(--input-border); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; padding: 0; transition: all .15s ease; flex-shrink: 0; position: relative; }
   .toolbar-btn:active { transform: scale(.9); }
   .toolbar-btn.active { background: #EDE9FE; border-color: #8B5CF6; box-shadow: 1px 1px 0 0 #8B5CF6; }
+  .effect-led { position: absolute; top: 3px; right: 3px; width: 7px; height: 7px; border-radius: 50%; background: var(--surface); border: 1.5px solid var(--input-border); transition: all .15s ease; pointer-events: none; }
+  .toolbar-btn.effect-on { border-color: #8B5CF6; box-shadow: 0 0 0 2px rgba(139,92,246,0.35); }
+  .toolbar-btn.effect-on .effect-led { background: #34D399; border-color: #1E293B; box-shadow: 0 0 5px 1px rgba(52,211,153,0.9); }
   .toolbar-sep { width: 1px; height: 22px; background: var(--input-border); margin: 0 2px; flex-shrink: 0; }
   .toolbar-select { height: 34px; border-radius: 8px; border: 2px solid var(--input-border); background: var(--surface); font-size: 11px; font-weight: 700; padding: 0 6px; outline: none; cursor: pointer; flex-shrink: 0; }
   .editor-area { background: var(--bg); border: 2px solid var(--input-border); border-radius: 14px; padding: 14px; min-height: 200px; font-size: 15px; line-height: 1.6; color: var(--border); outline: none; transition: all .2s ease; -webkit-user-select: text; user-select: text; }
@@ -252,8 +255,6 @@
   .btn-delete { background: var(--surface); color: #EF4444; border-color: #EF4444 !important; box-shadow: 2px 2px 0 0 #EF4444 !important; }
 
   .checklist-item { display: flex; align-items: flex-start; gap: 8px; margin: 4px 0; }
-  .jot-image { max-width: 100%; height: auto; border-radius: 10px; border: 2px solid var(--border); display: block; margin: 8px 0; box-shadow: 3px 3px 0 0 var(--shadow); }
-  .jot-card-body .jot-image, .jot-list-item .jot-image { max-height: 120px; width: auto; object-fit: cover; }
   .checklist-item input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; flex-shrink: 0; accent-color: #8B5CF6; cursor: pointer; }
   .checklist-item.checked span { text-decoration: line-through; color: var(--text-faint); }
   .checklist-item span { flex: 1; min-width: 0; outline: none; }
@@ -301,6 +302,28 @@
   .effect-underline-wavy { text-decoration: wavy underline #F472B6; text-decoration-thickness: 2px; }
   .effect-glow { text-shadow: 0 0 8px rgba(139,92,246,0.5), 0 0 16px rgba(139,92,246,0.3); }
   .effect-stamp { display: inline-block; transform: rotate(-3deg); border: 2px solid #EF4444; color: #EF4444; padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; font-size: 0.85em; letter-spacing: 0.05em; }
+
+  .upload-zone { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 28px 16px; border: 3px dashed var(--input-border); border-radius: 18px; cursor: pointer; outline: none; transition: all .2s cubic-bezier(.34,1.56,.64,1); background: var(--panel-item-bg); text-align: center; }
+  .upload-zone:active { transform: scale(.98); border-color: #8B5CF6; }
+  .upload-zone-icon { width: 48px; height: 48px; border-radius: 50%; background: #8B5CF6; border: 2px solid var(--border); box-shadow: 2px 2px 0 0 var(--border); display: flex; align-items: center; justify-content: center; }
+  .upload-zone-title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; font-size: 15px; font-weight: 700; color: var(--border); }
+  .upload-zone-sub { font-size: 12px; color: var(--text-muted); }
+
+  .settings-section-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin: 4px 0 8px; }
+  .settings-section { margin-bottom: 20px; }
+  .settings-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: var(--panel-item-bg); border: 2px solid transparent; margin-bottom: 8px; }
+  .settings-row-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--border); box-shadow: 1px 1px 0 0 var(--border); flex-shrink: 0; background: #8B5CF6; }
+  .settings-row-text { flex: 1; min-width: 0; }
+  .settings-row-title { font-size: 13px; font-weight: 700; }
+  .settings-row-sub { font-size: 11px; color: var(--text-muted); }
+
+  .jot-frame { background: var(--surface); border: 2px solid var(--border); border-radius: 14px; padding: 6px; box-shadow: 3px 3px 0 0 var(--shadow); overflow: hidden; }
+  .jot-frame img { display: block; width: 100%; max-height: 260px; border-radius: 9px; object-fit: contain; background: var(--panel-item-bg); }
+  .jot-card-pic-frame { background: var(--surface); border: 2px solid var(--border); border-radius: 10px; padding: 4px; box-shadow: 2px 2px 0 0 var(--shadow); overflow: hidden; margin-bottom: 8px; }
+  .jot-card-pic-frame img { display: block; width: 100%; height: 84px; object-fit: cover; border-radius: 6px; }
+  .jot-card-pic-label { font-size: 12px; font-weight: 700; color: var(--border); padding: 2px 2px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .jot-list-pic-thumb { width: 40px; height: 40px; border-radius: 8px; border: 2px solid var(--border); box-shadow: 1px 1px 0 0 var(--shadow); object-fit: cover; flex-shrink: 0; }
+  #editor-caption-input { margin-top: 12px; }
 
   #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 90; }
 
@@ -356,12 +379,12 @@
       </div>
     </div>
     <div class="top-bar-right">
+      <button id="btn-settings" class="btn-icon" data-action="showSettings" title="Settings">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 008 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H2a2 2 0 010-4h.09A1.65 1.65 0 003.6 8a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H8a1.65 1.65 0 001-1.51V2a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V8a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      </button>
       <button id="btn-theme" class="btn-icon" data-action="toggleTheme" title="Toggle dark mode">
         <svg id="theme-icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         <svg id="theme-icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-      </button>
-      <button id="btn-backup" class="btn-icon" data-action="openBackup" title="Backup / restore">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       </button>
       <button id="btn-grid" class="btn-icon active" data-action="toggleView" data-view="grid">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -385,36 +408,15 @@
       </div>
       <div class="empty-title">Nothing on your <span id="empty-page-name">general</span> jots pad yet</div>
       <div class="empty-desc">Slap down your first sticky. It only takes a second.</div>
-      <button class="empty-btn" data-action="openJotChoice">Start a note</button>
+      <button class="empty-btn" data-action="addNewJot">Start a note</button>
     </div>
   </div>
 
   <div class="bottom-nav" id="bottom-nav"></div>
 
-  <button class="fab" data-action="openJotChoice">
+  <button class="fab" data-action="addNewJot">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
   </button>
-</div>
-
-<div id="jotchoice-modal" class="modal-overlay" data-action="closeJotChoiceOverlay">
-  <div class="modal-sheet">
-    <div class="modal-header">
-      <div class="modal-title">New Jot</div>
-      <button class="modal-close" data-action="closeJotChoice">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <div class="modal-body" style="display:flex;gap:12px">
-      <button class="btn-full" style="width:auto;flex:1;background:#8B5CF6;color:var(--on-accent);display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 12px" data-action="chooseTextJot">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        Write a note
-      </button>
-      <button class="btn-full" style="width:auto;flex:1;background:var(--surface);color:var(--border);border:2px solid var(--border);box-shadow:2px 2px 0 0 var(--border);display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 12px" data-action="choosePhotoJot">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        Add a picture
-      </button>
-    </div>
-  </div>
 </div>
 
 <div id="editor-modal" class="modal-overlay" data-action="closeEditorOverlay">
@@ -429,6 +431,7 @@
       </button>
     </div>
     <div class="modal-body">
+      <div id="editor-text-block">
       <div class="editor-toolbar">
         <button class="toolbar-btn" data-action="fmt" data-cmd="bold" title="Bold">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z"/><path d="M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z"/></svg>
@@ -462,10 +465,6 @@
         <button class="toolbar-btn" data-action="insertChecklist" title="Checklist">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="6" height="6" rx="1"/><path d="M4.5 8l1 1 2-2"/><rect x="3" y="15" width="6" height="6" rx="1"/><line x1="13" y1="8" x2="21" y2="8"/><line x1="13" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <button class="toolbar-btn" data-action="pickImage" title="Insert picture">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        </button>
-        <input type="file" id="image-file-input" accept="image/*" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">
         <div class="toolbar-sep"></div>
         <button class="toolbar-btn" data-action="foreColor" data-val="#8B5CF6" title="Violet" style="background:#8B5CF6;border-color:var(--border)"><svg width="10" height="10" viewBox="0 0 24 24" fill="white" stroke="none"><circle cx="12" cy="12" r="10"/></svg></button>
         <button class="toolbar-btn" data-action="foreColor" data-val="#F472B6" title="Pink" style="background:#F472B6;border-color:var(--border)"><svg width="10" height="10" viewBox="0 0 24 24" fill="white" stroke="none"><circle cx="12" cy="12" r="10"/></svg></button>
@@ -479,12 +478,19 @@
         <button class="toolbar-btn" data-action="changeFont" data-val="'Courier New', monospace" title="Mono" style="font-family:'Courier New',monospace;font-size:10px;font-weight:700">Mo</button>
         <button class="toolbar-btn" data-action="changeFont" data-val="'Comic Sans MS', cursive" title="Hand" style="font-family:'Comic Sans MS',cursive;font-size:12px;font-weight:700">Ha</button>
         <div class="toolbar-sep"></div>
-        <button class="toolbar-btn" data-action="applyEffect" data-val="highlight" title="Highlight" style="background:linear-gradient(120deg,#FBBF24 0%,#FBBF24 100%);background-repeat:no-repeat;background-size:100% 40%;background-position:0 88%;font-size:10px;font-weight:700">Hi</button>
-        <button class="toolbar-btn" data-action="applyEffect" data-val="wavy" title="Wavy" style="text-decoration:wavy underline #F472B6;text-decoration-thickness:2px;font-size:10px;font-weight:700">Wa</button>
-        <button class="toolbar-btn" data-action="applyEffect" data-val="glow" title="Glow" style="text-shadow:0 0 8px rgba(139,92,246,0.5);font-size:10px;font-weight:700">Gl</button>
-        <button class="toolbar-btn" data-action="applyEffect" data-val="stamp" title="Stamp" style="color:#EF4444;border:1.5px solid #EF4444;font-size:9px;font-weight:700;transform:rotate(-2deg);padding:0 2px">St</button>
+        <button class="toolbar-btn" data-action="applyEffect" data-val="highlight" title="Highlight" style="background:linear-gradient(120deg,#FBBF24 0%,#FBBF24 100%);background-repeat:no-repeat;background-size:100% 40%;background-position:0 88%;font-size:10px;font-weight:700">Hi<span class="effect-led"></span></button>
+        <button class="toolbar-btn" data-action="applyEffect" data-val="wavy" title="Wavy" style="text-decoration:wavy underline #F472B6;text-decoration-thickness:2px;font-size:10px;font-weight:700">Wa<span class="effect-led"></span></button>
+        <button class="toolbar-btn" data-action="applyEffect" data-val="glow" title="Glow" style="text-shadow:0 0 8px rgba(139,92,246,0.5);font-size:10px;font-weight:700">Gl<span class="effect-led"></span></button>
+        <button class="toolbar-btn" data-action="applyEffect" data-val="stamp" title="Stamp" style="color:#EF4444;border:1.5px solid #EF4444;font-size:9px;font-weight:700;transform:rotate(-2deg);padding:0 2px">St<span class="effect-led"></span></button>
       </div>
       <div id="editor" contenteditable="true" class="editor-area"></div>
+      </div>
+      <div id="editor-image-block" style="display:none">
+        <div class="jot-frame">
+          <img id="editor-image-preview" src="" alt="Picture jot">
+        </div>
+        <input type="text" id="editor-caption-input" class="input-field" placeholder="Add a label for this picture...">
+      </div>
       <div class="editor-footer">
         <button class="btn-pin" id="editor-pin-btn" data-action="pinCurrent">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:3px"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14l-1.5-2A6 6 0 0116 11V7a1 1 0 011-1 2 2 0 000-4H7a2 2 0 000 4 1 1 0 011 1v4a6 6 0 01-1.5 4z"/></svg>
@@ -553,28 +559,44 @@
   </div>
 </div>
 
-<div id="backup-modal" class="modal-overlay" data-action="closeBackupOverlay">
+<div id="settings-modal" class="modal-overlay" data-action="closeSettingsOverlay">
   <div class="modal-sheet">
     <div class="modal-header">
-      <div class="modal-title" style="display:flex;align-items:center;gap:8px">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Backup &amp; Restore
-      </div>
-      <button class="modal-close" data-action="closeBackup">
+      <div class="modal-title">Settings</div>
+      <button class="modal-close" data-action="closeSettings">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
     </div>
     <div class="modal-body">
-      <p style="font-size:13px;color:var(--text-muted);line-height:1.6;margin:0 0 16px">
-        Everything in Jotter Pad lives only in this browser. Export a backup file now and then, so clearing site data or switching devices never costs you a note.
-      </p>
-      <button class="btn-full" style="background:#8B5CF6;color:var(--on-accent);margin-bottom:10px" data-action="exportBackup">Export backup (.json)</button>
-      <button class="btn-full" style="background:var(--surface);color:var(--border);border:2px solid var(--border);box-shadow:2px 2px 0 0 var(--border)" data-action="pickBackupFile">Import backup</button>
-      <input type="file" id="backup-file-input" accept="application/json,.json" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">
-      <p id="backup-status" style="font-size:12px;color:var(--text-faint);margin-top:12px"></p>
+      <div class="settings-section">
+        <div class="settings-section-title">Create</div>
+        <button class="upload-zone" data-action="triggerPictureUpload">
+          <div class="upload-zone-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          </div>
+          <div class="upload-zone-title">Upload a Picture</div>
+          <div class="upload-zone-sub">Create a picture jot on your&nbsp;<span id="settings-page-name">General</span>&nbsp;pad</div>
+        </button>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Appearance</div>
+        <div class="settings-row">
+          <div class="settings-row-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          </div>
+          <div class="settings-row-text">
+            <div class="settings-row-title">Dark Mode</div>
+            <div class="settings-row-sub">Toggle light / dark theme</div>
+          </div>
+          <button class="btn-icon" data-action="toggleTheme" title="Toggle dark mode">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+<input type="file" id="picture-upload-input" accept="image/*" style="display:none">
 
 <div class="toast-wrap" id="toast">
   <div class="toast-box">
@@ -659,6 +681,53 @@ function toggleTheme(){
   var next=current==='dark'?'light':'dark';
   applyTheme(next);
   try{localStorage.setItem('jotter_theme',next)}catch(e){}
+}
+
+function showSettings(){
+  const page=pages.find(p=>p.id===currentPage);
+  const nameEl=document.getElementById('settings-page-name');
+  if(nameEl&&page)nameEl.textContent=page.name;
+  document.getElementById('settings-modal').classList.add('show');
+}
+function closeSettings(){document.getElementById('settings-modal').classList.remove('show')}
+
+function triggerPictureUpload(){document.getElementById('picture-upload-input').click()}
+
+function handlePictureFile(e){
+  const file=e.target.files&&e.target.files[0];
+  e.target.value='';
+  if(!file)return;
+  if(!file.type.startsWith('image/')){toast('Please choose an image file','error');return}
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    const img=new Image();
+    img.onload=function(){
+      const MAX=1400;
+      let w=img.width,h=img.height;
+      if(w>MAX||h>MAX){
+        if(w>h){h=Math.round(h*MAX/w);w=MAX}else{w=Math.round(w*MAX/h);h=MAX}
+      }
+      const canvas=document.createElement('canvas');
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      let dataUrl;
+      try{dataUrl=canvas.toDataURL('image/jpeg',0.85)}catch(err){dataUrl=ev.target.result}
+      createPictureJot(dataUrl);
+    };
+    img.onerror=function(){toast('Could not read that image','error')};
+    img.src=ev.target.result;
+  };
+  reader.onerror=function(){toast('Could not read that image','error')};
+  reader.readAsDataURL(file);
+}
+
+function createPictureJot(dataUrl){
+  const id='jot_'+Date.now();
+  if(!jots[currentPage])jots[currentPage]=[];
+  jots[currentPage].unshift({id,type:'image',image:dataUrl,caption:'',content:'',date:new Date().toISOString(),pageId:currentPage,pinned:false});
+  save();renderPage();renderNav();
+  closeSettings();
+  openEditor(id);
 }
 
 function init(){initTheme();renderNav();renderPage()}
@@ -747,10 +816,17 @@ function makeCard(jot,color,idx){
   const d=new Date(jot.date);
   const dateStr=d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
   const timeStr=d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  const actionsHtml='<div class="jot-card-actions"><button class="jot-card-action-btn'+(jot.pinned?' pinned-btn':'')+'" data-action="doPin" data-jid="'+jot.id+'" title="Pin">'+pinIconSmall+'</button><button class="jot-card-action-btn" data-action="doArchive" data-jid="'+jot.id+'" title="Archive"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button><button class="jot-card-action-btn" data-action="doDelete" data-jid="'+jot.id+'" title="Delete"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></div>';
+  const headerHtml=(jot.pinned?'<div class="pin-badge">'+pinIconBadge+'</div>':'')+'<div class="jot-card-header"><div class="jot-card-dot-date"><div class="jot-card-dot" style="background:'+color.bg+'"></div><span class="jot-card-date">'+dateStr+'</span></div>'+actionsHtml+'</div>';
+  if(jot.type==='image'){
+    const label=jot.caption&&jot.caption.trim()?jot.caption:'<span style="color:var(--input-border);font-style:italic">Untitled picture</span>';
+    div.innerHTML=headerHtml+'<div class="jot-card-pic-frame"><img src="'+jot.image+'" alt="Picture jot"></div><div class="jot-card-pic-label">'+label+'</div><div class="jot-card-footer"><span class="jot-card-time">'+timeStr+'</span><div class="jot-card-badges"><span class="jot-card-badge">📷</span></div></div>';
+    return div;
+  }
   const tmp=document.createElement('div');tmp.innerHTML=jot.content;
   const txt=tmp.textContent||tmp.innerText||'Empty...';
   const preview=txt.substring(0,90)+(txt.length>90?'...':'');
-  div.innerHTML=(jot.pinned?'<div class="pin-badge">'+pinIconBadge+'</div>':'')+'<div class="jot-card-header"><div class="jot-card-dot-date"><div class="jot-card-dot" style="background:'+color.bg+'"></div><span class="jot-card-date">'+dateStr+'</span></div><div class="jot-card-actions"><button class="jot-card-action-btn'+(jot.pinned?' pinned-btn':'')+'" data-action="doPin" data-jid="'+jot.id+'" title="Pin">'+pinIconSmall+'</button><button class="jot-card-action-btn" data-action="doArchive" data-jid="'+jot.id+'" title="Archive"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button><button class="jot-card-action-btn" data-action="doDelete" data-jid="'+jot.id+'" title="Delete"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></div></div><div class="jot-card-body">'+(jot.content||'<span style="color:var(--input-border);font-style:italic">Empty jot...</span>')+'</div><div class="jot-card-footer"><span class="jot-card-time">'+timeStr+'</span><div class="jot-card-badges">'+(jot.content.includes('<b>')||jot.content.includes('<strong>')?'<span class="jot-card-badge" style="font-weight:700">B</span>':'')+(jot.content.includes('<i>')||jot.content.includes('<em>')?'<span class="jot-card-badge" style="font-style:italic">I</span>':'')+(jot.content.includes('checklist-item')?'<span class="jot-card-badge">☑</span>':'')+'</div></div>';
+  div.innerHTML=headerHtml+'<div class="jot-card-body">'+(jot.content||'<span style="color:var(--input-border);font-style:italic">Empty jot...</span>')+'</div><div class="jot-card-footer"><span class="jot-card-time">'+timeStr+'</span><div class="jot-card-badges">'+(jot.content.includes('<b>')||jot.content.includes('<strong>')?'<span class="jot-card-badge" style="font-weight:700">B</span>':'')+(jot.content.includes('<i>')||jot.content.includes('<em>')?'<span class="jot-card-badge" style="font-style:italic">I</span>':'')+(jot.content.includes('checklist-item')?'<span class="jot-card-badge">☑</span>':'')+'</div></div>';
   return div;
 }
 
@@ -760,10 +836,16 @@ function makeListItem(jot,color,idx){
   div.style.animationDelay=idx*0.04+'s';
   div.onclick=()=>openEditor(jot.id);
   const d=new Date(jot.date);
+  const actionsHtml='<div class="jot-list-actions"><button class="jot-card-action-btn'+(jot.pinned?' pinned-btn':'')+'" data-action="doPin" data-jid="'+jot.id+'">'+pinIconSmall+'</button><button class="jot-card-action-btn" data-action="doArchive" data-jid="'+jot.id+'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button><button class="jot-card-action-btn" data-action="doDelete" data-jid="'+jot.id+'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></div>';
+  if(jot.type==='image'){
+    const label=(jot.pinned?'📌 ':'')+(jot.caption&&jot.caption.trim()?jot.caption:'Untitled picture');
+    div.innerHTML='<img class="jot-list-pic-thumb" src="'+jot.image+'" alt="Picture jot"><div class="jot-list-text">'+label+'</div><div class="jot-list-date">'+d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+'</div>'+actionsHtml;
+    return div;
+  }
   const tmp=document.createElement('div');tmp.innerHTML=jot.content;
   const txt=tmp.textContent||tmp.innerText||'Empty...';
   const preview=(jot.pinned?'📌 ':'')+txt.substring(0,50)+(txt.length>50?'...':'');
-  div.innerHTML='<div class="jot-list-dot" style="background:'+color.bg+'"></div><div class="jot-list-text">'+preview+'</div><div class="jot-list-date">'+d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+'</div><div class="jot-list-actions"><button class="jot-card-action-btn'+(jot.pinned?' pinned-btn':'')+'" data-action="doPin" data-jid="'+jot.id+'">'+pinIconSmall+'</button><button class="jot-card-action-btn" data-action="doArchive" data-jid="'+jot.id+'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button><button class="jot-card-action-btn" data-action="doDelete" data-jid="'+jot.id+'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button></div>';
+  div.innerHTML='<div class="jot-list-dot" style="background:'+color.bg+'"></div><div class="jot-list-text">'+preview+'</div><div class="jot-list-date">'+d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})+'</div>'+actionsHtml;
   return div;
 }
 
@@ -774,32 +856,14 @@ function toggleView(view){
   renderJots();
 }
 
-function openJotChoice(){document.getElementById('jotchoice-modal').classList.add('show')}
-function closeJotChoice(){document.getElementById('jotchoice-modal').classList.remove('show')}
-
-function chooseTextJot(){
-  closeJotChoice();
-  addNewJot();
-}
-
-function choosePhotoJot(){
-  closeJotChoice();
-  addNewJot(false);
-  // Must be called synchronously, in the same tap, or Android Chrome
-  // silently refuses to open the picker (a setTimeout here breaks the
-  // "direct user gesture" chain it requires).
-  pickImage();
-}
-
-function addNewJot(autofocus){
+function addNewJot(){
   const id='jot_'+Date.now();
   if(!jots[currentPage])jots[currentPage]=[];
   jots[currentPage].unshift({id,content:'',date:new Date().toISOString(),pageId:currentPage,pinned:false});
-  save();openEditor(id,autofocus);
+  save();openEditor(id);
 }
 
-function openEditor(jotId,autofocus){
-  if(autofocus===undefined)autofocus=true;
+function openEditor(jotId){
   const jot=(jots[currentPage]||[]).find(j=>j.id===jotId);
   if(!jot)return;
   editingJotId=jotId;
@@ -807,22 +871,36 @@ function openEditor(jotId,autofocus){
   const c=colorMap[page.color]||colorMap.violet;
   document.getElementById('editor-dot').style.background=c.bg;
   document.getElementById('editor-date').textContent=new Date(jot.date).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
-  document.getElementById('editor').innerHTML=jot.content;
+  const isImage=jot.type==='image';
+  document.getElementById('editor-text-block').style.display=isImage?'none':'';
+  document.getElementById('editor-image-block').style.display=isImage?'':'none';
+  if(isImage){
+    document.getElementById('editor-image-preview').src=jot.image||'';
+    document.getElementById('editor-caption-input').value=jot.caption||'';
+  }else{
+    document.getElementById('editor').innerHTML=jot.content;
+  }
+  updateEffectIndicators();
   document.getElementById('editor-pin-btn').classList.toggle('is-pinned',!!jot.pinned);
   document.getElementById('editor-modal').classList.add('show');
-  // Auto-focusing pops the on-screen keyboard. For the photo-jot flow this
-  // fires right as the native picture picker is opening and steals focus
-  // back, closing the picker — so that path opts out of it.
-  if(autofocus)setTimeout(()=>document.getElementById('editor').focus(),100);
+  setTimeout(()=>{
+    if(isImage)document.getElementById('editor-caption-input').focus();
+    else document.getElementById('editor').focus();
+  },100);
 }
 
 function closeEditor(){document.getElementById('editor-modal').classList.remove('show');editingJotId=null}
 
 function saveJot(){
   if(!editingJotId)return;
-  const content=document.getElementById('editor').innerHTML;
   const jot=(jots[currentPage]||[]).find(j=>j.id===editingJotId);
-  if(jot){jot.content=content;save();renderPage();toast('Jot saved!')}
+  if(!jot){closeEditor();return}
+  if(jot.type==='image'){
+    jot.caption=document.getElementById('editor-caption-input').value.trim();
+  }else{
+    jot.content=document.getElementById('editor').innerHTML;
+  }
+  save();renderPage();toast('Jot saved!');
   closeEditor();
 }
 
@@ -879,8 +957,13 @@ function showArchive(){
     const sec=document.createElement('div');sec.className='archive-section';
     sec.innerHTML='<div class="archive-section-title"><div style="width:8px;height:8px;border-radius:50%;border:2px solid var(--border);background:'+c.bg+'"></div>'+page.name+'</div>';
     list.forEach(jot=>{
-      const tmp=document.createElement('div');tmp.innerHTML=jot.content;
-      const txt=(tmp.textContent||tmp.innerText||'Empty...').substring(0,80)+(tmp.textContent.length>80?'...':'');
+      let txt;
+      if(jot.type==='image'){
+        txt='📷 '+(jot.caption&&jot.caption.trim()?jot.caption:'Untitled picture');
+      }else{
+        const tmp=document.createElement('div');tmp.innerHTML=jot.content;
+        txt=(tmp.textContent||tmp.innerText||'Empty...').substring(0,80)+(tmp.textContent.length>80?'...':'');
+      }
       const item=document.createElement('div');item.className='archive-item';
       item.innerHTML='<div style="width:8px;height:8px;border-radius:50%;border:2px solid var(--border);background:'+c.bg+';flex-shrink:0"></div><div class="archive-item-text">'+txt+'</div><div class="archive-item-date">'+new Date(jot.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})+'</div><div class="archive-actions"><button class="archive-btn" data-action="restoreJot" data-pid="'+pid+'" data-jid="'+jot.id+'">Restore</button><button class="archive-btn archive-btn-delete" data-action="permaDelete" data-pid="'+pid+'" data-jid="'+jot.id+'">Delete</button></div>';
       sec.appendChild(item);
@@ -892,74 +975,6 @@ function showArchive(){
 }
 
 function closeArchive(){document.getElementById('archive-modal').classList.remove('show')}
-
-function openBackup(){
-  document.getElementById('backup-status').textContent='';
-  document.getElementById('backup-modal').classList.add('show');
-}
-function closeBackup(){document.getElementById('backup-modal').classList.remove('show')}
-
-function exportBackup(){
-  var payload={
-    app:'jotter-pad',
-    version:1,
-    exportedAt:new Date().toISOString(),
-    pages:pages,
-    jots:jots,
-    archived:archived
-  };
-  var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
-  var url=URL.createObjectURL(blob);
-  var a=document.createElement('a');
-  var stamp=new Date().toISOString().slice(0,10);
-  a.href=url;
-  a.download='jotter-pad-backup-'+stamp+'.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(function(){URL.revokeObjectURL(url)},1000);
-  toast('Backup downloaded');
-}
-
-function pickBackupFile(){
-  document.getElementById('backup-file-input').click();
-}
-
-function importBackup(file){
-  var statusEl=document.getElementById('backup-status');
-  if(!file){return}
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var data;
-    try{data=JSON.parse(e.target.result)}catch(err){
-      statusEl.textContent='That file is not a valid backup.';
-      toast('Import failed — invalid file','error');
-      return;
-    }
-    if(!data||typeof data!=='object'||!Array.isArray(data.pages)||typeof data.jots!=='object'){
-      statusEl.textContent='That file is not a valid Jotter Pad backup.';
-      toast('Import failed — invalid backup file','error');
-      return;
-    }
-    var jotCount=Object.values(data.jots||{}).reduce(function(n,list){return n+(list?list.length:0)},0);
-    var ok=confirm('Import this backup? It will replace everything currently in Jotter Pad ('+data.pages.length+' pages, '+jotCount+' jots). This cannot be undone.');
-    if(!ok)return;
-    pages=data.pages;
-    jots=data.jots||{};
-    archived=data.archived||{};
-    currentPage=pages[0]?pages[0].id:'general';
-    save();
-    renderNav();
-    renderPage();
-    closeBackup();
-    toast('Backup restored');
-  };
-  reader.onerror=function(){
-    statusEl.textContent='Could not read that file.';
-    toast('Import failed','error');
-  };
-  reader.readAsText(file);
-}
 
 function restoreJot(pid,jid){
   const list=archived[pid]||[];
@@ -1038,6 +1053,7 @@ document.addEventListener('selectionchange',()=>{
   if(editor && editor.contains(range.commonAncestorContainer)){
     savedRange=range.cloneRange();
   }
+  updateEffectIndicators();
 });
 
 function restoreEditorSelection(){
@@ -1063,52 +1079,41 @@ function insertChecklist(){
   editor.focus();
 }
 
-function pickImage(){
-  document.getElementById('image-file-input').click();
-}
-
-function handleImageFile(file){
-  if(!file||!file.type.startsWith('image/')){toast('That file is not a picture','error');return}
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var img=new Image();
-    img.onload=function(){
-      // Downscale + compress so a photo doesn't blow past localStorage's
-      // storage limit. 1200px wide at JPEG q0.8 is plenty for viewing on
-      // a phone screen while keeping the saved size reasonable.
-      var maxW=1200;
-      var scale=Math.min(1,maxW/img.width);
-      var w=Math.round(img.width*scale), h=Math.round(img.height*scale);
-      var canvas=document.createElement('canvas');
-      canvas.width=w;canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      var dataUrl=canvas.toDataURL('image/jpeg',0.8);
-      insertImageIntoEditor(dataUrl);
-    };
-    img.onerror=function(){toast('Could not read that picture','error')};
-    img.src=e.target.result;
-  };
-  reader.onerror=function(){toast('Could not read that picture','error')};
-  reader.readAsDataURL(file);
-}
-
-function insertImageIntoEditor(dataUrl){
-  restoreEditorSelection();
-  var editor=document.getElementById('editor');
-  editor.focus();
-  var html='<img src="'+dataUrl+'" class="jot-image"><div><br></div>';
-  var ok=document.execCommand('insertHTML',false,html);
-  if(!ok){
-    // Fallback for browsers where execCommand insertHTML misbehaves with
-    // no active selection inside the editor.
-    editor.innerHTML+=html;
-  }
-  editor.focus();
-}
-
 function toggleChecklistItem(cb){
   const item=cb.closest('.checklist-item');
   if(item)item.classList.toggle('checked',cb.checked);
+}
+
+function effectClassFor(effect){
+  return effect==='highlight'?'effect-highlight':effect==='wavy'?'effect-underline-wavy':effect==='glow'?'effect-glow':'effect-stamp';
+}
+
+function findEffectAncestor(node,cls,editor){
+  var el=node&&node.nodeType===3?node.parentElement:node;
+  while(el&&el!==editor){
+    if(el.classList&&el.classList.contains(cls))return el;
+    el=el.parentElement;
+  }
+  return null;
+}
+
+function placeCursorAfter(editor,node){
+  var sel=window.getSelection();
+  // Clear the native selection immediately - on mobile Safari/Chrome the
+  // selection handles/callout otherwise linger until the next touch cycle.
+  sel.removeAllRanges();
+  setTimeout(function(){
+    try{
+      var r=document.createRange();
+      r.setStartAfter(node);
+      r.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(r);
+      savedRange=r.cloneRange();
+    }catch(e){}
+    editor.focus();
+    updateEffectIndicators();
+  },0);
 }
 
 function applyEffect(effect){
@@ -1119,41 +1124,60 @@ function applyEffect(effect){
   var range=sel.getRangeAt(0);
   if(range.collapsed){toast('Select some text first','error');return}
 
-  var span=document.createElement('span');
-  if(effect==='highlight')span.className='effect-highlight';
-  else if(effect==='wavy')span.className='effect-underline-wavy';
-  else if(effect==='glow')span.className='effect-glow';
-  else if(effect==='stamp')span.className='effect-stamp';
+  var cls=effectClassFor(effect);
+  var ancestor=range.commonAncestorContainer;
+  var existing=findEffectAncestor(ancestor,cls,editor);
 
+  if(existing){
+    // Already applied to this text - toggle OFF by unwrapping the span
+    var parent=existing.parentNode;
+    var lastChild=existing.lastChild;
+    while(existing.firstChild)parent.insertBefore(existing.firstChild,existing);
+    parent.removeChild(existing);
+    parent.normalize();
+    if(lastChild)placeCursorAfter(editor,lastChild);
+    else{editor.focus();updateEffectIndicators();}
+    return;
+  }
+
+  // Not yet applied - toggle ON by wrapping selection in a new span
+  var span=document.createElement('span');
+  span.className=cls;
   try{
     var contents=range.extractContents();
     span.appendChild(contents);
     range.insertNode(span);
-
-    var newRange=document.createRange();
-    newRange.setStartAfter(span);
-    newRange.collapse(true);
-    sel.removeAllRanges();
-    sel.addRange(newRange);
-    savedRange=newRange.cloneRange();
+    placeCursorAfter(editor,span);
   }catch(e){
-    var ancestor=range.commonAncestorContainer;
-    if(ancestor.nodeType===3)ancestor=ancestor.parentNode;
-    if(ancestor && ancestor!==editor){
-      ancestor.className=(ancestor.className?ancestor.className+' ':'')+span.className;
+    var anc=range.commonAncestorContainer;
+    if(anc.nodeType===3)anc=anc.parentNode;
+    if(anc && anc!==editor){
+      anc.className=(anc.className?anc.className+' ':'')+cls;
     }
+    editor.focus();
+    updateEffectIndicators();
   }
-  editor.focus();
+}
+
+function updateEffectIndicators(){
+  var sel=window.getSelection();
+  var editor=document.getElementById('editor');
+  var states={highlight:false,wavy:false,glow:false,stamp:false};
+  if(sel&&sel.rangeCount&&editor.contains(sel.anchorNode)){
+    ['highlight','wavy','glow','stamp'].forEach(function(effect){
+      if(findEffectAncestor(sel.anchorNode,effectClassFor(effect),editor))states[effect]=true;
+    });
+  }
+  ['highlight','wavy','glow','stamp'].forEach(function(effect){
+    var btn=document.querySelector('.toolbar-btn[data-val="'+effect+'"]');
+    if(btn)btn.classList.toggle('effect-on',states[effect]);
+  });
 }
 
 function save(){
-  try{
-    localStorage.setItem('jotter_pages',JSON.stringify(pages));
-    localStorage.setItem('jotter_jots',JSON.stringify(jots));
-    localStorage.setItem('jotter_archived',JSON.stringify(archived));
-  }catch(e){
-    toast('Storage is full — try removing an old picture','error');
-  }
+  localStorage.setItem('jotter_pages',JSON.stringify(pages));
+  localStorage.setItem('jotter_jots',JSON.stringify(jots));
+  localStorage.setItem('jotter_archived',JSON.stringify(archived));
 }
 
 function hideToast(){document.getElementById('toast').classList.remove('show')}
@@ -1203,8 +1227,7 @@ window.addEventListener('keydown',e=>{
     if(document.getElementById('editor-modal').classList.contains('show'))closeEditor();
     if(document.getElementById('newpage-modal').classList.contains('show'))closeNewPage();
     if(document.getElementById('archive-modal').classList.contains('show'))closeArchive();
-    if(document.getElementById('backup-modal').classList.contains('show'))closeBackup();
-    if(document.getElementById('jotchoice-modal').classList.contains('show'))closeJotChoice();
+    if(document.getElementById('settings-modal').classList.contains('show'))closeSettings();
   }
 });
 
@@ -1219,12 +1242,11 @@ function setupEvents(){
     else if(action==='showNewPage'){e.preventDefault();showNewPage();}
     else if(action==='toggleView'){e.preventDefault();toggleView(el.dataset.view);}
     else if(action==='toggleTheme'){e.preventDefault();toggleTheme();}
+    else if(action==='showSettings'){e.preventDefault();showSettings();}
+    else if(action==='closeSettings'){e.preventDefault();closeSettings();}
+    else if(action==='closeSettingsOverlay'){e.preventDefault();if(e.target===el)closeSettings();}
+    else if(action==='triggerPictureUpload'){e.preventDefault();triggerPictureUpload();}
     else if(action==='addNewJot'){e.preventDefault();addNewJot();}
-    else if(action==='openJotChoice'){e.preventDefault();openJotChoice();}
-    else if(action==='closeJotChoice'){e.preventDefault();closeJotChoice();}
-    else if(action==='closeJotChoiceOverlay'){e.preventDefault();if(e.target===el)closeJotChoice();}
-    else if(action==='chooseTextJot'){e.preventDefault();chooseTextJot();}
-    else if(action==='choosePhotoJot'){e.preventDefault();choosePhotoJot();}
     else if(action==='closeEditor'){e.preventDefault();closeEditor();}
     else if(action==='closeEditorOverlay'){e.preventDefault();if(e.target===el)closeEditor();}
     else if(action==='archiveCurrent'){e.preventDefault();archiveCurrent();}
@@ -1237,17 +1259,11 @@ function setupEvents(){
     else if(action==='createPage'){e.preventDefault();createPage();}
     else if(action==='closeArchive'){e.preventDefault();closeArchive();}
     else if(action==='closeArchiveOverlay'){e.preventDefault();if(e.target===el)closeArchive();}
-    else if(action==='openBackup'){e.preventDefault();openBackup();}
-    else if(action==='closeBackup'){e.preventDefault();closeBackup();}
-    else if(action==='closeBackupOverlay'){e.preventDefault();if(e.target===el)closeBackup();}
-    else if(action==='exportBackup'){e.preventDefault();exportBackup();}
-    else if(action==='pickBackupFile'){e.preventDefault();pickBackupFile();}
     else if(action==='fmt'){e.preventDefault();fmt(el.dataset.cmd);}
     else if(action==='foreColor'){e.preventDefault();fmt('foreColor',el.dataset.val);}
     else if(action==='changeFont'){e.preventDefault();changeFont(el.dataset.val);}
     else if(action==='applyEffect'){e.preventDefault();applyEffect(el.dataset.val);}
     else if(action==='insertChecklist'){e.preventDefault();insertChecklist();}
-    else if(action==='pickImage'){e.preventDefault();pickImage();}
     else if(action==='doArchive'){e.preventDefault();e.stopPropagation();doArchive(el.dataset.jid);}
     else if(action==='doDelete'){e.preventDefault();e.stopPropagation();doDelete(el.dataset.jid);}
     else if(action==='doPin'){e.preventDefault();e.stopPropagation();doPin(el.dataset.jid);}
@@ -1277,19 +1293,7 @@ function setupEvents(){
     if(e.target && e.target.type==='checkbox')toggleChecklistItem(e.target);
   });
 
-  // Picture picker: reset the value after each use so choosing the same
-  // file twice in a row still fires the change event.
-  document.getElementById('image-file-input').addEventListener('change',function(e){
-    var file=e.target.files && e.target.files[0];
-    if(file)handleImageFile(file);
-    e.target.value='';
-  });
-
-  document.getElementById('backup-file-input').addEventListener('change',function(e){
-    var file=e.target.files && e.target.files[0];
-    if(file)importBackup(file);
-    e.target.value='';
-  });
+  document.getElementById('picture-upload-input').addEventListener('change',handlePictureFile);
 }
 setupEvents();
 // =============================================
